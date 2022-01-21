@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace ShoppingCartWS.Domain.Entities.Carts
+namespace ShoppingCartWS.Domain.Entities
 {
     public class Cart
     {
