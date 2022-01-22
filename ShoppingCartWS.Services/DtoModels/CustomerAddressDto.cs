@@ -1,8 +1,8 @@
 using System;
 
-namespace ShoppingCartWS.Domain.Entities
+namespace ShoppingCartWS.Services.DtoModels
 {
-    public class CustomerAddress
+    public class CustomerAddressDto
     {
         public Guid Id { get; set; }
         public string Address { get; set; }
@@ -10,6 +10,5 @@ namespace ShoppingCartWS.Domain.Entities
         public string City { get; set; }
         public string Province { get; set; }
         public string AddressDetail { get; set; }
-        public Guid CustomerId { get; set; }
     }
 }
