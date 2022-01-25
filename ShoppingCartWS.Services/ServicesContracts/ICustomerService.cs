@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using ShoppingCartWS.Services.DtoModels;
 
-namespace ShoppingWS.Services.ServicesContracts
+namespace ShoppingCartWS.Services.ServicesContracts
 {
     public interface ICustomerService
     {

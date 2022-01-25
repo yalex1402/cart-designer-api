@@ -3,16 +3,16 @@ using AutoMapper;
 using ShoppingCartWS.Domain.Entities;
 using ShoppingCartWS.Domain.Repositories;
 using ShoppingCartWS.Services.DtoModels;
-using ShoppingWS.Services.ServicesContracts;
+using ShoppingCartWS.Services.ServicesContracts;
 
-namespace ShoppingWS.Services.Services
+namespace ShoppingCartWS.Services.Services
 {
     public class CustomerService : ICustomerService
     {
-        private readonly ICustomerRepository _repository;
+        private readonly IRepositoryManager _repository;
         private readonly IMapper _mapper;
 
-        public CustomerService(ICustomerRepository repository,
+        public CustomerService(IRepositoryManager repository,
                                 IMapper mapper)
         {
             _repository = repository;
@@ -22,37 +22,37 @@ namespace ShoppingWS.Services.Services
         public void CreateCustomer(CustomerDto customer)
         {
             Customer customerEntity = _mapper.Map<Customer>(customer);
-            _repository.CreateCustomer(customerEntity);
+            _repository.CustomerRepository.CreateCustomer(customerEntity);
         }
 
         public async Task CreateCustomerAsync(CustomerDto customer)
         {
             Customer customerEntity = _mapper.Map<Customer>(customer);
-            await _repository.CreateCustomerAsync(customerEntity);
+            await _repository.CustomerRepository.CreateCustomerAsync(customerEntity);
         }
 
         public void RemoveCustomer(CustomerDto customer)
         {
             Customer customerEntity = _mapper.Map<Customer>(customer);
-            _repository.RemoveCustomerAsync(customerEntity);
+            _repository.CustomerRepository.RemoveCustomerAsync(customerEntity);
         }
 
         public async Task RemoveCustomerAsync(CustomerDto customer)
         {
             Customer customerEntity = _mapper.Map<Customer>(customer);
-            await _repository.RemoveCustomerAsync(customerEntity);
+            await _repository.CustomerRepository.RemoveCustomerAsync(customerEntity);
         }
 
         public void UpdateCustomer(CustomerDto customer)
         {
             Customer customerEntity = _mapper.Map<Customer>(customer);
-            _repository.UpdateCustomerAsync(customerEntity);
+            _repository.CustomerRepository.UpdateCustomerAsync(customerEntity);
         }
 
         public async Task UpdateCustomerAsync(CustomerDto customer)
         {
             Customer customerEntity = _mapper.Map<Customer>(customer);
-            await _repository.UpdateCustomerAsync(customerEntity);
+            await _repository.CustomerRepository.UpdateCustomerAsync(customerEntity);
         }
     }
 }

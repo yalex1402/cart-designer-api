@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using ShoppingCartWS.Domain.Entities;
 using ShoppingCartWS.Domain.Repositories;
 
-namespace ShoppingCartWS.Infrastructure.Data
+namespace ShoppingCartWS.Infrastructure.Data.Repositories
 {
     public class CustomerRepository : ICustomerRepository
     {
