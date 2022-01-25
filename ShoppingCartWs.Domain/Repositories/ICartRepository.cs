@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using ShoppingCartWS.Domain.Entities;
 
@@ -5,6 +6,7 @@ namespace ShoppingCartWS.Domain.Repositories
 {
     public interface ICartRepository
     {
+        Task<Cart> GetCartAsync(Guid cartId);
         void AddItemToCart(CartItem cartItem);
         Task AddItemToCartAsync(CartItem cartItem);
         void CleanCart(Cart cart);
