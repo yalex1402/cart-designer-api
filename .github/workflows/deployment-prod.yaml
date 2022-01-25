@@ -1,0 +1,32 @@
+name: CI/CD production environment
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Setup SDK .Net5
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '5.0.x'
+      
+      - name: Restore dependencies
+        run: dotnet restore './ShoppingCartWS/ShoppingCartWS.csproj'
+
+      - name: Build app
+        run: dotnet build './ShoppingCartWS/ShoppingCartWS.csproj' -c Release --no-restore
+      
+      - name: Restore tests dependencies
+        run: dotnet restore './ShoppingCartWS/ShoppingCartWS.Tests.csproj'
+
+      - name: Build tests
+        run: dotnet build './ShoppingCartWS/ShoppingCartWS.Tests.csproj' -c Release --no-restore
+
+      - name: Execute unit tests
+        run: dotnet test './ShoppingCartWS/ShoppingCartWS.Tests.csproj' --no-build --no-restore
