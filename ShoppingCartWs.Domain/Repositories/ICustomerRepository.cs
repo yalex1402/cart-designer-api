@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using ShoppingCartWS.Domain.Entities;
 
@@ -5,6 +6,8 @@ namespace ShoppingCartWS.Domain.Repositories
 {
     public interface ICustomerRepository
     {
+        Task<Customer> GetCustomerByIdAsync(Guid customerId);
+        Task<Customer> GetCustomerByEmailAsync(string customerEmail);
         void CreateCustomer(Customer customer);
         Task CreateCustomerAsync(Customer customer);
         void UpdateCustomer(Customer customer);
