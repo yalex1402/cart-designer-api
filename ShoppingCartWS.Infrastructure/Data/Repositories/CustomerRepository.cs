@@ -18,12 +18,20 @@ namespace ShoppingCartWS.Infrastructure.Data
 
         public async Task<Customer> GetCustomerByIdAsync(Guid customerId)
         {
-            return await _dataContext.Customers.Where(c => c.Id == customerId).FirstOrDefaultAsync();
+            return await _dataContext.Customers
+                .Join(_dataContext.CustomerAddresses, c => c.Id, ca => ca.CustomerId, (c,ca) => new {c, ca})
+                .Where(cu => cu.c.Id == customerId)
+                .Select(cu => cu.c)
+                .FirstOrDefaultAsync();
         }
 
         public async Task<Customer> GetCustomerByEmailAsync(string customerEmail)
         {
-            return await _dataContext.Customers.Where(c => c.Email == customerEmail).FirstOrDefaultAsync();
+            return await _dataContext.Customers
+                .Join(_dataContext.CustomerAddresses, c => c.Id, ca => ca.CustomerId, (c,ca) => new {c, ca})
+                .Where(cu => cu.c.Email == customerEmail)
+                .Select(cu => cu.c)
+                .FirstOrDefaultAsync();
         }
 
         public void CreateCustomer(Customer customer)
