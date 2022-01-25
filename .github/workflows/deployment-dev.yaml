@@ -17,7 +17,7 @@ jobs:
           dotnet-version: '5.0.x'
       
       - name: Domain
-        run: dotnet build './ShoppingCartWS.Domain/ShoppingCartWS.Domain.csproj'
+        run: dotnet build './ShoppingCartWs.Domain/ShoppingCartWs.Domain.csproj'
       - name: Infrastructure
         run: dotnet build './ShoppingCartWS.Infrastructure/ShoppingCartWS.Infrastructure.csproj'
       - name: Services
