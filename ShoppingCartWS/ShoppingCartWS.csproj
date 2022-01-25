@@ -11,7 +11,7 @@
   <ItemGroup>
     <ProjectReference Include="..\ShoppingCartWS.Services\ShoppingCartWS.Services.csproj" />
     <ProjectReference Include="..\ShoppingCartWS.Infrastructure\ShoppingCartWS.Infrastructure.csproj" />
-    <ProjectReference Include="..\ShoppingCartWS.Domain\ShoppingCartWS.Domain.csproj" />
+    <ProjectReference Include="..\ShoppingCartWs.Domain\ShoppingCartWs.Domain.csproj" />
   </ItemGroup>
 
 </Project>
