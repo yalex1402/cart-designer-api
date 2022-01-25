@@ -16,6 +16,12 @@ jobs:
         with:
           dotnet-version: '5.0.x'
       
+      - name: Domain
+        run: dotnet build './ShoppingCartWS.Domain/ShoppingCartWS.Domain.csproj'
+      - name: Infrastructure
+        run: dotnet build './ShoppingCartWS.Infrastructure/ShoppingCartWS.Infrastructure.csproj'
+      - name: Services
+        run: dotnet build './ShoppingCartWS.Services/ShoppingCartWS.Services.csproj'
       - name: Restore dependencies
         run: dotnet restore './ShoppingCartWS/ShoppingCartWS.csproj'
 
