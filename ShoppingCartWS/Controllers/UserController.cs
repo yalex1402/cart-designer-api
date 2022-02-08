@@ -15,15 +15,18 @@ namespace ShoppingCartWS.Controllers
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IServicesManager _servicesManager;
 
         public UserController(IServicesManager servicesManager,
                             UserManager<IdentityUser> userManager,
-                            SignInManager<IdentityUser> signInManager) 
+                            SignInManager<IdentityUser> signInManager,
+                            RoleManager<IdentityRole> roleManager) 
         {
             _servicesManager = servicesManager;
             _userManager = userManager;
             _signInManager = signInManager;
+            _roleManager = roleManager;
         }
 
         [HttpPost("Register")]
@@ -74,6 +77,34 @@ namespace ShoppingCartWS.Controllers
                     });
                 }
                 return BadRequest("Email or password are incorrect");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"{ex.Message}");
+            }
+        }
+
+        [HttpPost("AssignRole")]
+        public async Task<IActionResult> AssignRoleAsync([FromBody]AssignRoleModel model)
+        {
+            try
+            {
+                IdentityUser userFound = await _userManager.FindByEmailAsync(model.Email);
+                if (userFound == null)
+                {
+                    return NotFound($"User {model.Email} does not exist");
+                }
+                IdentityRole roleFound = await _roleManager.FindByNameAsync(model.RoleName);
+                if (roleFound == null)
+                {
+                    return NotFound($"Role {model.RoleName} not found");
+                }
+                IdentityResult resultRole = await _userManager.AddToRoleAsync(userFound, model.RoleName);
+                if (!resultRole.Succeeded)
+                {
+                    return BadRequest($"Role could not be assigned to {userFound.UserName}- error: {string.Join(",", resultRole.Errors.Select(x => x.Description).ToArray())}");
+                }
+                return Ok($"User {userFound.Email} was assigned to {roleFound.Name} successfully");
             }
             catch (Exception ex)
             {
