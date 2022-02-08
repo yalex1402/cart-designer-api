@@ -4,5 +4,6 @@ namespace ShoppingCartWS.Services.ServicesContracts
     {
         ICustomerService CustomerService {get;}
         IOrderService OrderService {get;}
+        IJwtTokenFactoryService TokenFactoryService {get;}
     }
 }
