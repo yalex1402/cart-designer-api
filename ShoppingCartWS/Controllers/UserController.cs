@@ -34,6 +34,15 @@ namespace ShoppingCartWS.Controllers
         {
             try
             {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest("Parameters are not valid");
+                }
+                IdentityUser userFound = await _userManager.FindByEmailAsync(model.Email);
+                if (userFound != null)
+                {
+                    return BadRequest($"User {model.Email} already exists");
+                }
                 IdentityUser user = new IdentityUser()
                 {
                     Email = model.Email,
@@ -59,6 +68,10 @@ namespace ShoppingCartWS.Controllers
         {
             try
             {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest("Parameters are not valid");
+                }
                 var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, false, false);
                 if (result.Succeeded)
                 {
@@ -89,6 +102,10 @@ namespace ShoppingCartWS.Controllers
         {
             try
             {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest("Parameters are not valid");
+                }
                 IdentityUser userFound = await _userManager.FindByEmailAsync(model.Email);
                 if (userFound == null)
                 {
