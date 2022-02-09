@@ -68,7 +68,7 @@ namespace ShoppingCartWS.Controllers
         {
             try
             {
-                if (!ModelState.IsValid)
+                if (string.IsNullOrEmpty(model.Email) || string.IsNullOrEmpty(model.Password))
                 {
                     return BadRequest("Parameters are not valid");
                 }
@@ -102,7 +102,7 @@ namespace ShoppingCartWS.Controllers
         {
             try
             {
-                if (!ModelState.IsValid)
+                if (string.IsNullOrEmpty(model.Email) || string.IsNullOrEmpty(model.RoleName))
                 {
                     return BadRequest("Parameters are not valid");
                 }
