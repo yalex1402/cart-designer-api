@@ -128,5 +128,87 @@ namespace ShoppingCartWS.Tests
 
             Assert.IsType<OkObjectResult>(result);
         }
+
+        [Fact]
+        public async Task AssignRoleAsync_WithInvalidParameters_ReturnsBadRequest()
+        {
+            var controller = new UserController(serviceManagerStub.Object,userManagerStub.Object,signInManagerStub.Object,roleManagerStub.Object);
+
+            var result = await controller.AssignRoleAsync(new AssignRoleModel());
+
+            Assert.IsType<BadRequestObjectResult>(result);
+        }
+
+        [Fact]
+        public async Task AssignRoleAsync_WithUnexistingUser_ReturnsNotFound()
+        {
+            userManagerStub.Setup(repo => repo.FindByEmailAsync(It.IsAny<string>()))
+                .ReturnsAsync((IdentityUser)null);
+            var controller = new UserController(serviceManagerStub.Object,userManagerStub.Object,signInManagerStub.Object,roleManagerStub.Object);
+            
+            var result = await controller.AssignRoleAsync(new AssignRoleModel()
+            {
+                Email ="test@yopmail.com",
+                RoleName = "TestRole"
+            });
+
+            Assert.IsType<NotFoundObjectResult>(result);
+        }
+
+        [Fact]
+        public async Task AssignRoleAsync_WithUnexistingRole_ReturnsNotFound()
+        {
+            userManagerStub.Setup(repo => repo.FindByEmailAsync(It.IsAny<string>()))
+                .ReturnsAsync(new IdentityUser());
+            roleManagerStub.Setup(repo => repo.FindByNameAsync(It.IsAny<string>()))
+                .ReturnsAsync((IdentityRole)null);
+            var controller = new UserController(serviceManagerStub.Object,userManagerStub.Object,signInManagerStub.Object,roleManagerStub.Object);
+            
+            var result = await controller.AssignRoleAsync(new AssignRoleModel()
+            {
+                Email ="test@yopmail.com",
+                RoleName = "TestRole"
+            });
+
+            Assert.IsType<NotFoundObjectResult>(result);
+        }
+
+        [Fact]
+        public async Task AssignRoleAsync_WithErrorOnAssign_ReturnsBadRequest()
+        {
+            userManagerStub.Setup(repo => repo.FindByEmailAsync(It.IsAny<string>()))
+                .ReturnsAsync(new IdentityUser());
+            roleManagerStub.Setup(repo => repo.FindByNameAsync(It.IsAny<string>()))
+                .ReturnsAsync(new IdentityRole());
+            userManagerStub.Setup(repo => repo.AddToRoleAsync(It.IsAny<IdentityUser>(),It.IsAny<string>())).ReturnsAsync(new IdentityResult());
+            var controller = new UserController(serviceManagerStub.Object,userManagerStub.Object,signInManagerStub.Object,roleManagerStub.Object);
+            
+            var result = await controller.AssignRoleAsync(new AssignRoleModel()
+            {
+                Email ="test@yopmail.com",
+                RoleName = "TestRole"
+            });
+
+            Assert.IsType<BadRequestObjectResult>(result);
+        }
+
+        [Fact]
+        public async Task AssignRoleAsync_WithCorrectAssign_ReturnsOk()
+        {
+            userManagerStub.Setup(repo => repo.FindByEmailAsync(It.IsAny<string>()))
+                .ReturnsAsync(new IdentityUser());
+            roleManagerStub.Setup(repo => repo.FindByNameAsync(It.IsAny<string>()))
+                .ReturnsAsync(new IdentityRole());
+            userManagerStub.Setup(repo => repo.AddToRoleAsync(It.IsAny<IdentityUser>(),It.IsAny<string>())).ReturnsAsync(IdentityResult.Success);
+            var controller = new UserController(serviceManagerStub.Object,userManagerStub.Object,signInManagerStub.Object,roleManagerStub.Object);
+            
+            var result = await controller.AssignRoleAsync(new AssignRoleModel()
+            {
+                Email ="test@yopmail.com",
+                RoleName = "TestRole"
+            });
+
+            Assert.IsType<OkObjectResult>(result);
+        }
     }
 }
