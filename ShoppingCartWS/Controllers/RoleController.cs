@@ -20,6 +20,10 @@ namespace ShoppingCartWS.Controllers
         [HttpPost("CreateRole")]
         public async Task<IActionResult> CreateRoleAsync([FromBody]AddUpdateRoleModel model)
         {
+            if (string.IsNullOrEmpty(model.Name))
+            {
+                return BadRequest("Parameters are not valid");
+            }
             IdentityRole role = new IdentityRole()
             {
                 Name= model.Name
