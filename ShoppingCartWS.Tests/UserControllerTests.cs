@@ -88,5 +88,42 @@ namespace ShoppingCartWS.Tests
 
             Assert.IsType<OkObjectResult>(result);
         }
+
+        [Fact]
+        public async Task LoginAsync_WithInvalidParameters_ReturnsBadRequest()
+        {
+            var controller = new UserController(serviceManagerStub.Object,userManagerStub.Object,signInManagerStub.Object,roleManagerStub.Object);
+            var result = await controller.LoginAsync(new LoginModel());
+
+            Assert.IsType<BadRequestObjectResult>(result);
+        }
+
+        [Fact]
+        public async Task LoginAsync_WithIncorrectValues_ReturnsBadRequest()
+        {
+            signInManagerStub.Setup(repo => repo.PasswordSignInAsync(It.IsAny<string>(),It.IsAny<string>(),false,false)).ReturnsAsync(Microsoft.AspNetCore.Identity.SignInResult.Failed);
+            var controller = new UserController(serviceManagerStub.Object,userManagerStub.Object,signInManagerStub.Object,roleManagerStub.Object);
+            var result = await controller.LoginAsync(new LoginModel()
+            {
+                Email = "test@yopmail.com",
+                Password = "incorrect",
+            });
+
+            Assert.IsType<BadRequestObjectResult>(result);
+        }
+
+        [Fact]
+        public async Task LoginAsync_WithCorrectValues_ReturnsOk()
+        {
+            signInManagerStub.Setup(repo => repo.PasswordSignInAsync(It.IsAny<string>(),It.IsAny<string>(),false,false)).ReturnsAsync(Microsoft.AspNetCore.Identity.SignInResult.Success);
+            var controller = new UserController(serviceManagerStub.Object,userManagerStub.Object,signInManagerStub.Object,roleManagerStub.Object);
+            var result = await controller.LoginAsync(new LoginModel()
+            {
+                Email = "test@yopmail.com",
+                Password = "test",
+            });
+
+            Assert.IsType<OkObjectResult>(result);
+        }
     }
 }
