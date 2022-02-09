@@ -82,6 +82,10 @@ namespace ShoppingCartWS.Controllers
                         Id = userLoggedIn.Id
                     };
                     var token = _servicesManager.TokenFactoryService.GenerateToken(userDto);
+                    if (token == null)
+                    {
+                        return BadRequest("User could not be authenticated");
+                    }
                     return Ok(new 
                     {
                         Email = userLoggedIn.Email,

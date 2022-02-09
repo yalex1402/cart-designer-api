@@ -21,6 +21,10 @@ namespace ShoppingCartWS.Services.Services
 
         public TokenModel GenerateToken(UserLoginDto user)
         {
+            if (string.IsNullOrEmpty(user.Email) || string.IsNullOrEmpty(user.Id))
+            {
+                return null;
+            }
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_tokenConfig.SecretKey);
             var tokenDescriptor = new SecurityTokenDescriptor()

@@ -113,6 +113,23 @@ namespace ShoppingCartWS.Tests
         }
 
         [Fact]
+        public async Task LoginAsync_WithTokenNull_ReturnsBadRequest()
+        {
+            serviceManagerStub.Setup(serv => serv.TokenFactoryService.GenerateToken(It.IsAny<UserLoginDto>())).Returns((TokenModel)null);
+            userManagerStub.Setup(repo => repo.FindByEmailAsync(It.IsAny<string>()))
+                .ReturnsAsync(new IdentityUser());
+            signInManagerStub.Setup(repo => repo.PasswordSignInAsync(It.IsAny<string>(),It.IsAny<string>(),false,false)).ReturnsAsync(Microsoft.AspNetCore.Identity.SignInResult.Success);
+            var controller = new UserController(serviceManagerStub.Object,userManagerStub.Object,signInManagerStub.Object,roleManagerStub.Object);
+            var result = await controller.LoginAsync(new LoginModel()
+            {
+                Email = "test@yopmail.com",
+                Password = "test",
+            });
+
+            Assert.IsType<BadRequestObjectResult>(result);
+        }
+
+        [Fact]
         public async Task LoginAsync_WithCorrectValues_ReturnsOk()
         {
             serviceManagerStub.Setup(serv => serv.TokenFactoryService.GenerateToken(It.IsAny<UserLoginDto>())).Returns(new TokenModel(It.IsAny<string>(),It.IsAny<DateTime>()));
