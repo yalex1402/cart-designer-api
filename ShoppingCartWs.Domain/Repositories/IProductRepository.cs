@@ -12,7 +12,7 @@ namespace ShoppingCartWS.Domain.Repositories
         void Remove(Product product);
         Task RemoveAsync(Product product);
         Task<IEnumerable<Product>> GetAllAsync();
-        Task<Product> GetProduct(Guid productId);
-        Task<IEnumerable<Product>>GetProductByName(string productName);
+        Task<Product> GetProduct(string productId);
+        Task<IEnumerable<Product>> GetProductByName(string productName);
     }
 }

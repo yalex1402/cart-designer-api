@@ -16,7 +16,7 @@ namespace ShoppingCartWS.Infrastructure.Data.Repositories
             _dataContext = dataContext;
         }
 
-        public async Task<Customer> GetCustomerByIdAsync(Guid customerId)
+        public async Task<Customer> GetCustomerByIdAsync(string customerId)
         {
             return await _dataContext.Customers
                 .Join(_dataContext.CustomerAddresses, c => c.Id, ca => ca.CustomerId, (c,ca) => new {c, ca})
