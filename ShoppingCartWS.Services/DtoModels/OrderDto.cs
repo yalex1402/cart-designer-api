@@ -5,7 +5,7 @@ namespace ShoppingCartWS.Services.DtoModels
 {
     public class OrderDto
     {
-        public Guid Id { get; set; }
+        public string Id { get; set; }
         public DateTime DateGenerated { get; set; }
         public double Total { get; set; }
         public string Observations { get; set; }
